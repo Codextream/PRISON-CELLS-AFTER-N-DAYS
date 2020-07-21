@@ -1,50 +1,57 @@
 # 3 SUM
 
-Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+There are 8 prison cells in a row, and each cell is either occupied or vacant.
+
+Each day, whether the cell is occupied or vacant changes according to the following rules:
+
+If a cell has two adjacent neighbors that are both occupied or both vacant, then the cell becomes occupied.
+Otherwise, it becomes vacant.
+(Note that because the prison is a row, the first and the last cells in the row can't have two adjacent neighbors.)
+
+We describe the current state of the prison in the following way: cells[i] == 1 if the i-th cell is occupied, else cells[i] == 0.
+
+Given the initial state of the prison, return the state of the prison after N days (and N such changes described above.)
+
+ 
+### Example:
+<pre>
+Input: cells = [0,1,0,1,1,0,0,1], N = 7
+Output: [0,0,1,1,0,0,0,0]
+Explanation: 
+The following table summarizes the state of the prison on each day:
+Day 0: [0, 1, 0, 1, 1, 0, 0, 1]
+Day 1: [0, 1, 1, 0, 0, 0, 0, 0]
+Day 2: [0, 0, 0, 0, 1, 1, 1, 0]
+Day 3: [0, 1, 1, 0, 0, 1, 0, 0]
+Day 4: [0, 0, 0, 0, 0, 1, 0, 0]
+Day 5: [0, 1, 1, 1, 0, 1, 0, 0]
+Day 6: [0, 0, 1, 0, 1, 1, 0, 0]
+Day 7: [0, 0, 1, 1, 0, 0, 0, 0]
+
+</pre>
 
 ### Note:
 
-The solution set must not contain duplicate triplets.
-
-### Example:
-<pre>
-Given array nums = [-1, 0, 1, 2, -1, -4],
-
-A solution set is:
-[
-  [-1, 0, 1],
-  [-1, -1, 2]
-]
-</pre>
+cells.length == 8
+cells[i] is in {0, 1}
+1 <= N <= 10^9
 
 ### Solution:
 
 ```cpp
-
-
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        int n = nums.size();
-        vector<vector<int>> ans;
-        for(int i=0;i<n-2;i++){
-               if(i>0 && (nums[i]==nums[i-1]) )continue;
-               int l=i+1, r= n-1;
-               while(l<r){
-                   int sum =nums[i]+nums[l]+nums[r];
-                   if(sum<0) l++;
-                   else if(sum>0)r--;
-                   else {
-                       ans.push_back(vector<int>{nums[i],nums[l],nums[r]});
-                       while(l+1<r && nums[l]==nums[l+1])l++;
-                       while(l<r-1 && nums[r]==nums[r-1]) r--;
-                       l++; r--;
-                   }
-               }
-        }
-        return ans;
+    
+vector<int> prisonAfterNDays(vector<int>& cells, int N) {
+    vector<int> ans(8, 0);
+    int count  = N % 14;
+    if (count == 0) count = 14;
+    for(int i = 0; i < count; i++){   
+        for (int j = 1; j < 7; j++)
+            ans[j] = ((cells[j-1] ^ cells[j+1])!=0) ? 0:1;             
+        cells = ans; 
     }
+    return ans;			
+}
 };
-
 ```
