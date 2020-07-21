@@ -1,4 +1,4 @@
-# 3 SUM
+# PRISON CELLS AFTER N DAYS
 
 There are 8 prison cells in a row, and each cell is either occupied or vacant.
 
